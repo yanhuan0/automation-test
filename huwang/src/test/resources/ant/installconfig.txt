@@ -1,0 +1,5 @@
+[Install] 
+InstallDirectoryPath=c:\Mozilla\ 
+QuickLaunchShortcut=false 
+DesktopShortcut=false 
+StartMenuShortcuts=false

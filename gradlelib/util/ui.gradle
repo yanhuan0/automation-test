@@ -1,0 +1,154 @@
+
+ext{
+  FILER_ROOT	="/net/slcnas441/export/farm_artifacts/biee"
+  T_WORK		="${buildDir}"
+  ROOT_DIR		="${projectDir}/src/test/java"
+
+
+//###################################################
+//kill a process, which was started by a common line with keyword
+//###################################################
+  kill={keyword->
+    ant.delete(file:'kill.sh')
+    ant.echo(file:'kill.sh', message:"kill -9 \$(ps aux | grep '${keyword}' | awk '{print \$2}')")
+    ant.chmod(file:'kill.sh', perm:'777')
+    ant.exec(executable:'./kill.sh')
+    ant.delete(file:'kill.sh')
+  }
+
+//###################################################
+//start selenium server
+//###################################################
+  startSeleniumServer={
+    println("startSeleniumServer()")
+    ant.exec(executable:'java', spawn:'true'){
+      arg(line: '-jar ../../lib/selenium-server-standalone.jar -log selenium_server.log')
+    }
+    ant.sleep(seconds:'5')
+  }
+
+//###################################################
+//stop selenium server
+//###################################################
+  stopSeleniumServer={
+    println("stopSeleniumServer()")
+    kill("selenium-server")
+  }
+
+//###################################################
+//start a selenium grid hub, then start phantomjs server as grid node
+//###################################################
+  startPJServer={
+    println("startPJServer")
+    ant.exec(executable:'java', spawn:'true'){
+      arg(line: '-jar ../../lib/selenium-server-standalone.jar -role hub -log grid_hub.log')
+    }
+    ant.sleep(seconds:'10')
+    ant.exec(executable:'../../lib/phantomjs/bin/phantomjs', spawn:'true'){
+      arg(line: '--webdriver=8080 --webdriver-selenium-grid-hub=http://127.0.0.1:4444 --webdriver-logfile=grid_phantomjs.log')
+    }
+    ant.sleep(seconds:'5')
+  }
+
+//###################################################
+//stop the the selenium grid hub and phantomjs server 
+//###################################################
+  stopPJServer={
+    println("stopPJServer")
+    kill("grid_phantomjs")
+    kill("role hub")
+  }
+
+//###################################################
+//install firefox with specified version (default is 13)
+//###################################################
+  installFirefox={version->
+    if(version=='13'){
+      println("installing FF13 to ${T_WORK}/firefox")
+      ant.delete(dir:"${T_WORK}/firefox")
+      ant.copy(todir:T_WORK, file:"${FILER_ROOT}/ff/firefox-13.0.1.tar.bz2")
+      ant.bunzip2(src:"${T_WORK}/firefox-13.0.1.tar.bz2")
+      ant.untar(src:"${T_WORK}/firefox-13.0.1.tar", dest:T_WORK)
+      ant.mkdir(dir:"${T_WORK}/firefox/plugins")
+      ant.gunzip(src:"/ade_autofs/gd14_fmw/PCBPEL_11.1.1.6.0_GENERIC.rdd/LATEST/bpm/qa/bpmr2tests/utils/sikuli/libflashplayer.tar.gz", dest:"${T_WORK}/firefox/plugins")
+      ant.untar(src:"${T_WORK}/firefox/plugins/libflashplayer.tar", dest:"${T_WORK}/firefox/plugins")
+      ant.chmod(perm:'777'){
+        fileset(dir:"${T_WORK}/firefox")
+      }
+    }else{
+      throw new Exception("unsupported Firefox version ${version}")
+    }
+  }
+
+
+//###################################################
+//Copy all base files to designated directory. 
+//Then unzip base.zip or base_skyros.zip if needed
+//###################################################
+  prepareSoapBaseFiles = {srcDir, destDir->
+    ant.copy(todir:destDir){
+      fileset(dir:srcDir)
+    }
+    String baseZip = "${destDir}/base.zip"
+    if(new File(baseZip).exists()){
+      println("==================Unzip ${baseZip} file to ${destDir}")
+      ant.unzip(src:baseZip, dest:destDir, overwrite:'true')
+    }
+    if(BIEE_SKYROS=='true'){
+      String skyrosZip="${destDir}/base_skyros.zip"
+      println("==================skyros is on")
+      if(new File(skyrosZip).exists()){
+        println("==================Unzip ${skyrosZip} to ${destDir}")
+        ant.unzip(src:skyrosZip, dest:destDir, overwrite:'true')
+      }
+    }
+  }
+
+//###################################################
+//generate java proxy code based on wsdl
+//###################################################
+  prepareSoap = {localWsdl, proxy ->
+    if(proxy==null){
+      proxy="axis"
+    }	  
+    proxyOutputRoot="${buildDir}/soap_output"
+    proxyClassesDir="${proxyOutputRoot}/proxy/${proxy}/classes"
+    proxySrcDir="${proxyOutputRoot}/proxy/${proxy}/src"
+    ant.delete(dir:proxyClassesDir)
+    ant.delete(dir:proxySrcDir)
+    ant.mkdir(dir:proxyClassesDir)
+    ant.mkdir(dir:proxySrcDir)
+    println("generating java proxy code")	
+    javaexec {
+      classpath configurations.all
+      main = 'org.apache.axis.wsdl.WSDL2Java'
+      args = ["-O", "-1", "-w", "-Nurn://oracle.bi.webservices/v6=oracle.bi.services.soap", "-o", proxySrcDir, localWsdl]
+    }
+  }
+
+	
+//###################################################
+//the following 4 tasks are for local test development only
+//###################################################
+  task(startPJServer) << {
+    startPJServer()
+  }
+
+  task(startSeleniumServer) << {
+    startSeleniumServer()
+  }
+
+  task(stopPJServer) << {
+    stopPJServer()
+  }
+
+  task(stopSeleniumServer) << {
+    stopSeleniumServer()
+  }
+
+  task(installFF13) << {
+    installFirefox('13')
+  }
+
+}
+

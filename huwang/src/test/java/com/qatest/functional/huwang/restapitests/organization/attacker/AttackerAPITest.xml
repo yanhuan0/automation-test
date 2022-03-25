@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<TestSuite>
+
+	<TestCase id="testAddAttackerTeam">
+		<Param name="method">testAddAttackerTeam</Param>
+		<Param name="checkValues">data:teams:name/AttackerTeam_1</Param>
+		<Param name="attackerTeamFile">addAttackteam.json</Param>
+	</TestCase>
+
+	<TestCase id="testAttackerGroupList">
+		<Param name="method">testAttackerGroupList</Param>
+		<Param name="checkValues">data:name/</Param>
+	</TestCase>
+
+</TestSuite>
+

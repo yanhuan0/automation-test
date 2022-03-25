@@ -1,0 +1,60 @@
+apply from: 'gradlelib/util/server.gradle'
+apply from: 'gradlelib/util/soap.gradle'
+apply from: 'gradlelib/util/datasource.gradle'
+
+task admintoolCommandlineTest(type:Test) {
+
+	scanForTestClasses=false
+  	include '**/dataprovider/**/*.class', '**/admintool_cmdline_fmk/**/*.class'
+
+	systemProperties 'projectDir': projectDir
+	systemProperties 'biee.twork': buildDir
+	
+	systemProperties 'bieeAdminUser': bieeAdminUser
+	systemProperties 'bieeAdminPwd': bieeAdminPwd
+	systemProperties 'bieeHostUser': bieeHostUser
+	systemProperties 'bieeHostPwd': bieeHostPwd
+	systemProperties 'bieeHostRootUser': bieeHostRootUser
+	systemProperties 'bieeHostRootPwd': bieeHostRootPwd
+
+	systemProperties 'hostname': System.properties['hostname']
+	systemProperties 'suiteToRun': 'mats'
+
+	testLogging.showStandardStreams = true
+	
+	useTestNG()
+}
+
+task serverQueryTest(type:Test) {
+
+	scanForTestClasses=false
+  	include '**/server_query/**/*.class'
+
+	systemProperties 'projectDir': projectDir
+	systemProperties 'biee.twork': buildDir
+	
+	systemProperties 'bieeAdminUser': bieeAdminUser
+	systemProperties 'bieeAdminPwd': bieeAdminPwd
+	systemProperties 'bieeHostUser': bieeHostUser
+	systemProperties 'bieeHostPwd': bieeHostPwd
+	
+	systemProperties 'bieeHostRootUser': bieeHostRootUser
+	systemProperties 'bieeHostRootPwd': bieeHostRootPwd
+	
+	systemProperties 'hostname': System.properties['hostname']
+	systemProperties 'testconfig.devops.ip': System.properties['testconfig.devops.ip']
+	systemProperties 'testconfig.linux.username': System.properties['testconfig.linux.username']
+	
+	systemProperties 'suitesList': 'bishiphome_mats'
+	systemProperties 'oldStructure': 'true'//as structure has changed in bi-platform
+	
+	systemProperties System.getProperties()
+	
+	testLogging.showStandardStreams = true
+	
+	useTestNG{
+		includeGroups('server-query')
+	}
+}
+
+

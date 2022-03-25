@@ -1,0 +1,83 @@
+apply from: 'gradlelib/util/soap.gradle'
+apply from: 'gradlelib/util/datasource.gradle'
+apply from: 'gradlelib/util/ui.gradle'
+
+task seleniumRCTest(type:Test){
+  scanForTestClasses=false
+  include '**/ps/**/*.class'
+  useTestNG{
+    includeGroups('selenium-rc')
+  }
+  systemProperty 'biee.t.work', T_WORK
+  systemProperty 'biee.url',  System.getProperty('BIEE_URL')
+  systemProperty 'root.dir', ROOT_DIR
+  systemProperty 'biee.browser', "*firefox ${T_WORK}/firefox/firefox"
+  systemProperty 'biee.cleanup.after.test', 'true'
+
+  systemProperty 'biee.admin.user',  System.getProperty('BIEE_ADMIN_USER')
+  systemProperty 'biee.admin.pwd',  System.getProperty('BIEE_ADMIN_PWD')
+
+  testLogging.showStandardStreams = true
+
+  beforeSuite {suite->
+    if(suite.getName()=='Test Run'){
+      installFirefox('13')
+      startSeleniumServer()
+    }
+  }
+  afterSuite {suite, result->
+    if(suite.getName()=='Test Run'){
+      stopSeleniumServer()
+    }
+  }
+}
+
+task phantomjsTest(type:Test){
+  scanForTestClasses=false
+  include '**/ps/**/*.class'
+  useTestNG{
+    includeGroups("phantomjs")
+    options.listeners << 'com.oracle.biqa.framework.TestNGGrouping'
+  }
+  systemProperty 'TEST_GROUPS', System.getProperty('TEST_GROUPS')
+  systemProperty 'biee.t.work', T_WORK
+  systemProperty 'selenium.grid.loc', 'localhost'
+  systemProperty 'biee.browser', 'phantomjs'
+  systemProperty 'biee.url',  System.getProperty('BIEE_URL')
+  //systemProperty 'biee.url', "http://" + System.getProperty("BIEE_HOSTNAME") + ":7001/visualanalyzer/faces/index.jspx"
+  systemProperty 'biee.dor.dirs', '../resources/com/oracle/bi/platform'
+  systemProperty 'root.dir', ROOT_DIR
+  systemProperty 'biee.cleanup.after.test', 'true'
+  testLogging.showStandardStreams = true
+
+  beforeSuite {suite->
+    if(suite.getName()=='Test Run'){
+      startPJServer()
+    }
+  }
+  afterSuite {suite, result->
+    if(suite.getName()=='Test Run'){
+      stopPJServer()
+    }
+  }
+
+}
+
+task webdriverTest(type:Test){
+  scanForTestClasses=false
+  include '**/ps/**/*.class'
+  useTestNG{
+    includeGroups("webdriver")
+    options.listeners << 'com.oracle.biqa.framework.TestNGGrouping'
+  }
+  systemProperty 'TEST_GROUPS', System.getProperty('TEST_GROUPS')
+  systemProperty 'biee.t.work', T_WORK
+  systemProperty 'biee.browser', "*firefox ${T_WORK}/firefox/firefox"
+  systemProperty 'biee.url',  System.getProperty('BIEE_URL')
+  systemProperty 'biee.dor.dirs', '../resources/com/oracle/bi/platform'
+  systemProperty 'root.dir', ROOT_DIR
+  systemProperty 'biee.cleanup.after.test', 'true'
+  testLogging.showStandardStreams = true
+
+}
+

@@ -1,0 +1,25 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply from: 'test.gradle'
+allprojects {
+	repositories {
+			flatDir {
+				dirs 'libs' 
+			}
+	}
+
+	configurations {
+		   standaloneCompile.extendsFrom testCompile
+		   standaloneRuntime.extendsFrom testRuntime
+	}
+}
+
+configure(allprojects.findAll {}) {
+  apply plugin: 'java'
+	dependencies {
+		standaloneCompile fileTree(dir: 'libs', include: ['*.jar'])  
+
+	}	
+}
+
+

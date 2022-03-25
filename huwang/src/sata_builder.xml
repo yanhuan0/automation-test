@@ -1,0 +1,109 @@
+<project name="fmk_builder" default="buildFrameworkJar">
+	
+	<property name="binDir" value="${basedir}/bin">
+		</property>
+		<property name="srcDir" value="${basedir}/main/java">
+		</property>
+		<property name="testSrcDir" value="${basedir}/test/java">
+		</property>
+		<property name="FMK_JAR" value="FMK.jar">
+		</property>		
+		<property name="distDir" value="${basedir}/../dist">
+		</property>
+		<property name="tempDirectory" value="${basedir}/../temp">
+		</property>
+		<property name="testLibDir" value="${basedir}/../../test_project/lib">
+		</property>
+	
+	<property name="libDir" value="/net/slcnas501/export/bishiphome_qa/12c/artifacts_server/other/jars"></property>
+	
+	<path id="classpath">
+			<fileset dir="${libDir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<pathconvert property="mf.classpath" pathsep=" ">
+		    <path refid="classpath" />
+			
+		    <flattenmapper  />
+		</pathconvert>
+
+		<target name="clean">
+			<echo>basedir=${basedir}</echo>
+			<echo>tempDirectory=${tempDirectory}</echo>
+			<delete dir="${binDir}">
+			</delete>
+			<mkdir dir="${distDir}" />
+			<mkdir dir="${binDir}" />
+		</target>
+		<target name="compile" depends="clean,copyFilesToTempForCompilation">
+			<copy todir="${binDir}/com/oracle/biqa/framework/util" >
+				<fileset dir="${srcDir}/com/oracle/biqa/framework/util">
+
+					<include name="VTconfig.properties" />
+				</fileset>
+				
+			</copy>
+			<copy todir="${binDir}">
+				<fileset dir="${srcDir}">
+					<include name="*.properties"/>
+				</fileset>
+			</copy>
+			<javac srcdir="${tempDirectory}" destdir="${binDir}" classpathref="classpath" debug="true" >
+
+			</javac>
+		</target>
+
+		<target name="copyFilesToTempForCompilation">
+			<mkdir dir="${tempDirectory}/com/oracle/biqa/framework/util" />
+			<copy todir="${tempDirectory}/com/oracle/biqa/framework/util" >
+				<fileset dir="${srcDir}/com/oracle/biqa/framework/util">
+					<include name="AntHelper.java" />
+					<include name="BIEEHelperLocal.java" />
+					<include name="CommandExecutor.java" />
+					<include name="VTconfig.properties" />
+				</fileset>
+			</copy>
+
+			<copy todir="${tempDirectory}/com/oracle/biqa/framework/server" >
+				<fileset dir="${srcDir}/com/oracle/biqa/framework/server">
+					<include name="Serve**.java" />
+					<exclude name="ServerSuite.java" />
+					<include name="NqsconfigIniFileContentType.java" />
+					<include name="OdbcHelper.java" />
+				</fileset>
+			</copy>
+			<copy todir="${tempDirectory}/com/oracle/biqa/framework/" >
+							<fileset dir="${srcDir}/com/oracle/biqa/framework">
+								<include name="FileUtil.java" />
+								<include name="FrameworkException.java" />
+								
+							</fileset>
+						</copy>
+			<copy todir="${tempDirectory}/com/oracle/bi/platform/tests/server_query">
+				<fileset dir="${testSrcDir}/com/oracle/bi/platform/tests/server_query">
+					<include name="ServerQueryFmkDriverLocal.java"/>
+				</fileset>
+			</copy>
+
+		</target>
+		<target name="buildFrameworkJar" depends="compile">
+			<echo>########### Creating framework Jar ${distDir}/${FMK_JAR} ##########</echo>
+
+			<manifest file="MANIFEST.MF">
+				<attribute name="Class-Path" value="${mf.classpath}" />
+				<attribute name="Main-Class" value="com.oracle.bi.platform.tests.server_query.ServerQueryFmkDriverLocal" />
+
+
+			</manifest>
+			<copy todir="${binDir}">
+				<fileset dir="${libDir}">
+					<include name="*.jar" />
+				</fileset>
+			</copy>
+			<jar destfile="${distDir}/${FMK_JAR}" basedir="${binDir}" manifest="MANIFEST.MF">
+			</jar>
+			<copy file="${distDir}/${FMK_JAR}" todir="${testLibDir}">
+			</copy>
+		</target>
+</project>

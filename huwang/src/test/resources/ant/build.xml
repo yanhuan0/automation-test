@@ -1,0 +1,501 @@
+<project>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+	<property name="rScriptFolder" value="${BIEE_HOME}/bifoundation/advanced_analytics/" />
+	
+	<target name="test1">
+	   <echo>test1 from ant **************************</echo>
+		<if>
+		 <isset property="bieeHostIsRemote" />
+		 <then>
+		   <echo message="bieeHostIsRemote has been set" />
+            <sshexec host="slc01mnx"
+                username="aime1"
+                password="coolkid1"
+                command="hostname"/>
+		 </then>
+		 <else>
+		   <echo message="bieeHostIsRemote has NOT been set" />
+		 </else>
+		</if>
+
+	</target>
+	
+    <target name="startSeleniumServer">
+    	<copy tofile="${T_WORK}/selenium-server-standalone.jar" file="${FILER_ROOT}/selenium/selenium-server-standalone-2.37.0.jar"/>
+    	<exec executable="java" spawn="true">
+    		<arg line="-jar ${T_WORK}/selenium-server-standalone.jar -log selenium_server.log"/>
+    	</exec>
+    	<sleep seconds="5"/>
+    </target>
+
+    <target name="kill">
+    	<delete file="kill.sh"/>
+    	<echo file="kill.sh" message="kill -9 `ps aux | grep '${keyword}' | awk '{print \$2}'`"/>
+    	<chmod file="kill.sh" perm="777"/>
+    	<exec executable="./kill.sh"/>
+    	<delete file="kill.sh"/>
+    </target>
+
+    <target name="stopSeleniumServer">
+    	<antcall target="kill">
+    		<param name="keyword" value="selenium-server"/>
+    	</antcall>
+    </target>
+
+    <target name="installFirefox28">
+    	<delete dir="${T_WORK}/firefox"/>
+    	<copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-28.0.tar.bz2"/>
+    	<bunzip2 src="${T_WORK}/firefox-28.0.tar.bz2"/>
+    	<untar src="${T_WORK}/firefox-28.0.tar" dest="${T_WORK}"/>
+    	<mkdir dir="${T_WORK}/firefox/plugins"/>
+    	<gunzip src="${FILER_ROOT}/ff/libflashplayer.tar.gz" dest="${T_WORK}/firefox/plugins"/>
+    	<untar src="${T_WORK}/firefox/plugins/libflashplayer.tar" dest="${T_WORK}/firefox/plugins"/>
+    	<chmod perm="777">
+    		<fileset dir="${T_WORK}/firefox"/>
+    	</chmod>
+    </target>
+
+    <target name="installFirefox31">
+    	<delete dir="${T_WORK}/firefox"/>
+    	<copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-31.0esr.tar.bz2"/>
+    	<bunzip2 src="${T_WORK}/firefox-31.0esr.tar.bz2"/>
+    	<untar src="${T_WORK}/firefox-31.0esr.tar" dest="${T_WORK}"/>
+    	<mkdir dir="${T_WORK}/firefox/plugins"/>
+    	<gunzip src="${FILER_ROOT}/ff/libflashplayer.tar.gz" dest="${T_WORK}/firefox/plugins"/>
+    	<untar src="${T_WORK}/firefox/plugins/libflashplayer.tar" dest="${T_WORK}/firefox/plugins"/>
+    	<chmod perm="777">
+    		<fileset dir="${T_WORK}/firefox"/>
+    	</chmod>
+    </target>
+
+    <target name="installFirefox35">
+    	<delete dir="${T_WORK}/firefox"/>
+    	<copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-35.0.1.tar.bz2"/>
+    	<bunzip2 src="${T_WORK}/firefox-35.0.1.tar.bz2"/>
+    	<untar src="${T_WORK}/firefox-35.0.1.tar" dest="${T_WORK}"/>
+    	<mkdir dir="${T_WORK}/firefox/plugins"/>
+    	<gunzip src="${FILER_ROOT}/ff/libflashplayer.tar.gz" dest="${T_WORK}/firefox/plugins"/>
+    	<untar src="${T_WORK}/firefox/plugins/libflashplayer.tar" dest="${T_WORK}/firefox/plugins"/>
+    	<chmod perm="777">
+    		<fileset dir="${T_WORK}/firefox"/>
+    	</chmod>
+    </target>
+
+    <target name="installFirefox41">
+        <delete dir="${T_WORK}/firefox"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-41.0.tar.bz2"/>
+        <bunzip2 src="${T_WORK}/firefox-41.0.tar.bz2"/>
+        <untar src="${T_WORK}/firefox-41.0.tar" dest="${T_WORK}"/>
+        <chmod perm="777">
+                <fileset dir="${T_WORK}/firefox"/>
+        </chmod>
+    </target>
+
+    <target name="installFirefox42">
+        <delete dir="${T_WORK}/firefox"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-42.0.tar.bz2"/>
+        <bunzip2 src="${T_WORK}/firefox-42.0.tar.bz2"/>
+        <untar src="${T_WORK}/firefox-42.0.tar" dest="${T_WORK}"/>
+        <chmod perm="777">
+                <fileset dir="${T_WORK}/firefox"/>
+        </chmod>
+    </target>
+	
+    <target name="installFirefox45">
+        <delete dir="${T_WORK}/firefox"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-45.0.tar.bz2"/>
+        <bunzip2 src="${T_WORK}/firefox-45.0.tar.bz2"/>
+        <untar src="${T_WORK}/firefox-45.0.tar" dest="${T_WORK}"/>
+        <chmod perm="777">
+                <fileset dir="${T_WORK}/firefox"/>
+        </chmod>
+    </target>
+
+    <target name="installFirefox60">
+        <delete dir="${T_WORK}/firefox"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-60.0.1.tar.bz2"/>
+        <bunzip2 src="${T_WORK}/firefox-60.0.1.tar.bz2"/>
+        <untar src="${T_WORK}/firefox-60.0.1.tar" dest="${T_WORK}"/>
+        <chmod perm="777">
+                <fileset dir="${T_WORK}/firefox"/>
+        </chmod>
+    </target>
+	
+	
+    <target name="installFirefox61">
+        <delete dir="${T_WORK}/firefox"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-61.0.tar.bz2"/>
+        <bunzip2 src="${T_WORK}/firefox-61.0.tar.bz2"/>
+        <untar src="${T_WORK}/firefox-61.0.tar" dest="${T_WORK}"/>
+        <chmod perm="777">
+                <fileset dir="${T_WORK}/firefox"/>
+        </chmod>
+    </target>
+	
+    <target name="installFirefox62">
+        <delete dir="${T_WORK}/firefox"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-62.0.tar.bz2"/>
+        <bunzip2 src="${T_WORK}/firefox-62.0.tar.bz2"/>
+        <untar src="${T_WORK}/firefox-62.0.tar" dest="${T_WORK}"/>
+        <chmod perm="777">
+                <fileset dir="${T_WORK}/firefox"/>
+        </chmod>
+    </target>
+
+    <target name="downloadGeckodriver">
+        <delete dir="${T_WORK}/geckodriver"/>
+        <copy todir="${T_WORK}" file="${FILER_ROOT}/../geckodriver/geckodriver-v0.22.0-linux64.tar.gz"/>
+        <gunzip src="${T_WORK}/geckodriver-v0.22.0-linux64.tar.gz"/>
+        <untar src="${T_WORK}/geckodriver-v0.22.0-linux64.tar" dest="${T_WORK}"/>
+        <chmod perm="777" file="${T_WORK}/geckodriver"/>
+    </target>
+	
+    <target name="installFirefox">
+    	<antcall target="installFirefox13"/>
+    </target>
+	
+    <target name="installFirefox13">
+    	<delete dir="${T_WORK}/firefox"/>
+    	<copy todir="${T_WORK}" file="${FILER_ROOT}/ff/firefox-13.0.1.tar.bz2"/>
+    	<bunzip2 src="${T_WORK}/firefox-13.0.1.tar.bz2"/>
+    	<untar src="${T_WORK}/firefox-13.0.1.tar" dest="${T_WORK}"/>
+    	<mkdir dir="${T_WORK}/firefox/plugins"/>
+    	<gunzip src="${FILER_ROOT}/ff/libflashplayer.tar.gz" dest="${T_WORK}/firefox/plugins"/>
+    	<untar src="${T_WORK}/firefox/plugins/libflashplayer.tar" dest="${T_WORK}/firefox/plugins"/>
+    	<chmod perm="777">
+    		<fileset dir="${T_WORK}/firefox"/>
+    	</chmod>
+    </target>
+	
+    <target name="installR" description="installing R for advance Analytics" depends="killyumprocess" >
+      <echo>Check if R is installed and proceed accordingly</echo>
+ 	  <unzip src="${rScriptFolder}/r-installer.zip" dest="${rScriptFolder}" />
+      <replace file="${rScriptFolder}/proxy.txt" token="proxy=http://[proxy-host:proxy-port]" value="proxy=http://www-proxy.us.oracle.com:80" />
+	  <replace file="${rScriptFolder}/RInstaller.sh" token="yum install R-3.1.1*" value="yum install R-3.1.1* -y" />
+	  <replace file="${rScriptFolder}/RInstaller.sh" token="read ans" value="ans=y" />
+  	  <replace file="${rScriptFolder}/RInstaller.sh" token="yum remove $RCORE" value="yum remove $RCORE -y" />
+	  <chmod perm="777"  file="${rScriptFolder}/RInstaller.sh" />      
+			 <if>
+			      <or>
+				       <available file="/usr/bin/R" />
+				  </or>
+				  <then>
+				       <echo>R is  installed. So Proceeding  UnInstall </echo>
+                       <exec executable="/usr/local/packages/aime/install/run_as_root" dir="${rScriptFolder}">
+ 	                         <arg  value="./RInstaller.sh uninstall"/>
+ 	                         <arg value="/tmp"/>
+                       </exec> 
+				  </then>
+			 </if>
+		     <echo>R is not installed. So Proceeding with R Install </echo>
+		     <antcall target="killyumprocess" />
+             <exec executable="/usr/local/packages/aime/install/run_as_root" dir="${rScriptFolder}">
+ 	               <arg  value="./RInstaller.sh install"/>
+ 	               <arg value="/tmp"/>
+             </exec> 
+		     <echo>Install R Packages </echo>
+			 <exec executable="/usr/local/packages/aime/install/run_as_root" dir="${rScriptFolder}">
+ 	               <arg  value="./RInstaller.sh installpackages"/>
+ 	               <arg value="/tmp"/>
+            </exec>
+     </target>
+	
+     <target name="killyumprocess" description="kill if yum process are locked by another process" >
+              <property name="killYumProcess" value="${T_WORK}/killYuProcess.sh" />
+                  <echo file="${killYumProcess}" >
+for i in `ps -ef | grep -i yum | grep -v grep | awk '{print $2}'`
+    do kill -9 $i ;
+done;
+                  </echo>
+              <chmod perm="777"  file="${killYumProcess}" />
+ 	          <exec executable="/usr/local/packages/aime/install/run_as_root" dir="${T_WORK}">
+ 	                <arg  value="${killYumProcess}"/>
+ 	                <arg value="/tmp"/>
+ 	          </exec>
+     </target> 
+
+    <!--targets to add user/roles -->
+    <target name="checkos">
+       <condition property="is.windows">
+         <os family="windows"/>
+       </condition>
+
+       <condition property="is.linux">
+        <os family="unix"/>
+       </condition>
+   </target>
+  
+   <!-- BIP security setup block begin-->
+   <target name="setup_windows" depends="checkos" if="is.windows">
+      <property name="osExtension" value="cmd"/>
+      <property name="DIRSEP" value="\\"/>
+      <property name="wlst_loc" value="${MW_HOME}${DIRSEP}oracle_common${DIRSEP}common${DIRSEP}bin"/>
+      <property name="py_loc" value="${test.dir}${DIRSEP}python${DIRSEP}"/>
+   </target>
+
+
+   <target name="setup_linux" depends="checkos" if="is.linux">
+      <property name="osExtension" value="sh"/>
+      <property name="DIRSEP" value="/"/>
+      <property name="wlst_loc" value="${MW_HOME}${DIRSEP}oracle_common${DIRSEP}common${DIRSEP}bin"/>
+      <property name="py_loc" value="/net/${hostname}${test.dir}${DIRSEP}python${DIRSEP}"/>
+  </target>
+
+  <target name="add_users" depends="setup_windows, setup_linux">
+    <echo>*** Debug: add_user target ******</echo>
+    <echo>*** wlst_loc=${wlst_loc} ******</echo>
+    <echo>*** py_loc=${py_loc} ******</echo>
+    <echo>*** host=${host} ******</echo>
+    <echo>*** wlst_port=${wlst_port} ******</echo>
+    <echo>*** new_user=${new_user} ******</echo>
+    <echo>*** wlst_user=${biee.admin.user} ******</echo>
+    <echo>*** wlst_pwd=${biee.admin.pwd} ******</echo>
+
+    <if>
+     <isset property="bieeHostIsRemote" />
+     <then>
+       <echo message="bieeHostIsRemote has been set" />
+        <sshexec host="${bieeHostname}"
+            username="${bieeHostUser}"
+            password="${bieeHostPwd}"
+            command="${wlst_loc}/wlst.${osExtension} /net/${testHostname}${py_loc}addUser.py ${biee.admin.user} ${biee.admin.pwd} t3://${host}:${wlst_port} ${new_user}"/>
+     </then>
+     <else>
+        <exec dir="${wlst_loc}" executable="wlst.${osExtension}" failonerror="true" resolveexecutable="true">                    
+            <arg value="${py_loc}addUser.py"/>
+            <arg value="${biee.admin.user}"/>
+            <arg value="${biee.admin.pwd}"/>
+            <arg value="t3://${host}:${wlst_port}"/>
+            <arg value="${new_user}"/>
+        </exec>
+     </else>
+    </if>
+  	
+  </target>
+
+
+  <target name="add_roles" depends="setup_windows, setup_linux">
+    <echo>*** Debug: add_roles target ******</echo>
+    <echo>*** wlst_user=${biee.admin.user} ******</echo>
+    <echo>*** wlst_pwd=${biee.admin.pwd} ******</echo>
+
+
+    <if>
+         <isset property="bieeHostIsRemote" />
+         <then>
+            <echo message="bieeHostIsRemote has been set" />
+            <sshexec host="${bieeHostname}"
+                     username="${bieeHostUser}"
+                     password="${bieeHostPwd}"
+                     command="${wlst_loc}/wlst.${osExtension} /net/${testHostname}${py_loc}addAppRole.py ${biee.admin.user} ${biee.admin.pwd} t3://${host}:${wlst_port} BIAuthors BIConsumer BIAdministrator"/>
+         </then>
+     <else>
+         <exec dir="${wlst_loc}" executable="wlst.${osExtension}" failonerror="true" resolveexecutable="true">
+               <arg value="${py_loc}addAppRole.py"/>
+               <arg value="${biee.admin.user}"/>
+               <arg value="${biee.admin.pwd}"/>
+               <arg value="t3://${host}:${wlst_port}"/>
+               <arg value="BIAuthors"/>
+               <arg value="BIConsumer"/>
+               <arg value="BIAdministrator"/>
+         </exec>
+      </else>
+    </if>
+
+  </target>
+
+
+  <target name="add_usermappings" depends="setup_windows, setup_linux">
+    <echo>*** Debug: add_usermapping target ******</echo>
+    <echo>*** new_user=${new_user} ******</echo>
+    <echo>*** wlst_user=${biee.admin.user} ******</echo>
+    <echo>*** wlst_pwd=${biee.admin.pwd} ******</echo>
+
+    <if>
+     <isset property="bieeHostIsRemote" />
+     <then>
+       <echo message="bieeHostIsRemote has been set" />
+        <sshexec host="${bieeHostname}"
+            username="${bieeHostUser}"
+            password="${bieeHostPwd}"
+            command="${wlst_loc}/wlst.${osExtension} /net/${testHostname}${py_loc}userRoleMapping.py ${biee.admin.user} ${biee.admin.pwd} t3://${host}:${wlst_port} ${new_user} BIAdministrator ${new_user} BIAuthor ${new_user} BIConsumer"/>
+     </then>
+     <else>
+        <exec dir="${wlst_loc}" executable="wlst.${osExtension}" failonerror="true" resolveexecutable="true">
+            <arg value="${py_loc}userRoleMapping.py"/>
+            <arg value="${biee.admin.user"/>
+            <arg value="${biee.admin.pwd}"/>
+            <arg value="t3://${host}:${wlst_port}"/>
+            <arg value="${new_user}"/>
+            <arg value="BIAdministrator"/>
+            <arg value="${new_user}"/>
+            <arg value="BIAuthor"/>
+            <arg value="${new_user}"/>
+            <arg value="BIConsumer"/>
+        </exec>
+    </else>
+   </if>
+  </target>
+  <!-- BIP security setup block end-->
+
+  <!-- Mashup security setup block begin -->
+
+  <target name="add_users_to_group" depends="setup_windows, setup_linux">
+      <echo>*** Debug: add_users_to_group target ******</echo>
+      <echo>*** wlst_loc=${wlst_loc} ******</echo>
+      <echo>*** py_loc=${py_loc} ******</echo>
+      <echo>*** host=${host} ******</echo>
+      <echo>*** wlst_port=${wlst_port} ******</echo>
+      <echo>*** user=${user} ******</echo>
+      <echo>*** group=${group} ******</echo>
+      <echo>*** wlst_user=${biee.admin.user} ******</echo>
+      <echo>*** wlst_pwd=${biee.admin.pwd} ******</echo>
+
+    <if>
+         <isset property="bieeHostIsRemote" />
+         <then>
+              <echo message="bieeHostIsRemote has been set" />
+              <sshexec host="${bieeHostname}"
+                       username="${bieeHostUser}"
+                       password="${bieeHostPwd}"
+                       command="${wlst_loc}/wlst.${osExtension} /net/${testHostname}${py_loc}userToGroup.py ${biee.admin.user} ${biee.admin.pwd} t3://${host}:${wlst_port} ${user} ${group}"/>
+          </then>
+          <else>
+               <exec dir="${wlst_loc}" executable="wlst.${osExtension}" failonerror="true" resolveexecutable="true">   
+                     <arg value="${py_loc}userToGroup.py"/>
+                     <arg value="${biee.admin.user}"/>
+                     <arg value="${biee.admin.pwd}"/>
+                     <arg value="t3://${host}:${wlst_port}"/>
+                     <arg value="${user}"/>
+                     <arg value="${group}"/>
+                </exec>
+           </else>
+     </if>
+
+  </target>
+
+
+  <!-- Mashup security setup block end -->
+
+
+  <!--For Composer SubjectDecending set decending order config -->
+  <target name="setDesc" depends="setup_windows, setup_linux">
+    <property name="presentation.dir"  value="${MW_HOME}${DIRSEP}bi${DIRSEP}bifoundation${DIRSEP}admin${DIRSEP}config${DIRSEP}OracleBIPresentationServicesComponent"/>
+
+    <echo>######## Debug: Copy file=${presentation.dir}${DIRSEP}instanceconfig.xml</echo>
+
+    <echo>Presentation Server config file directory: ${presentation.dir}</echo>
+    <echo>perl file dir=${test.dir}${DIRSEP}files${DIRSEP}setDesc.pl</echo>
+    <echo>file dir=${file.dir}</echo>
+    <echo>file name=${file.name}</echo>
+
+    <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml.ORIG" overwrite="true"></copy>
+
+    <exec dir="/usr/bin" executable="perl">
+          <arg line="${test.dir}${DIRSEP}files${DIRSEP}setDesc.pl  ${file.dir} ${file.name}"/>
+    </exec>
+
+    <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml.tmp" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml" overwrite="true"></copy>
+  </target>
+
+  <target name="resetConfig" depends="setup_windows, setup_linux">
+    <property name="presentation.dir"  value="${MW_HOME}${DIRSEP}bi${DIRSEP}bifoundation${DIRSEP}admin${DIRSEP}config${DIRSEP}OracleBIPresentationServicesComponent"/>
+
+    <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml.ORIG" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml" overwrite="true"></copy>
+  </target>
+  
+  <!--For NullableValueTest.java-->
+  <target name="setNullable" depends="setup_windows, setup_linux">
+          <property name="presentation.dir"  value="${MW_HOME}${DIRSEP}bi${DIRSEP}bifoundation${DIRSEP}admin${DIRSEP}config${DIRSEP}OracleBIPresentationServicesComponent"/>
+
+          <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml.ORIG" overwrite="true"></copy>
+          <exec dir="/usr/bin" executable="perl">
+                  <arg line="${test.dir}${DIRSEP}files${DIRSEP}setNullable.pl  ${file_dir} ${file_name}"/>
+          </exec>
+          <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml.tmp" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml" overwrite="true"></copy>
+   </target>
+
+   <!--For SytleMATSTest.java-->
+   <target name="setDefaults_skyros" depends="setup_windows, setup_linux">
+          <property name="presentation.dir"  value="${MW_HOME}${DIRSEP}bi${DIRSEP}bifoundation${DIRSEP}admin${DIRSEP}config${DIRSEP}OracleBIPresentationServicesComponent"/>
+
+           <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml.ORIG" overwrite="true"></copy>
+
+           <exec dir="/usr/bin" executable="perl">
+                  <arg line="${test.dir}${DIRSEP}files${DIRSEP}setDefaults_defaultas_skyros.pl  ${file_dir} ${file_name}"/>
+           </exec>
+
+           <copy file="${presentation.dir}${DIRSEP}instanceconfig.xml.tmp" tofile="${presentation.dir}${DIRSEP}instanceconfig.xml" overwrite="true"></copy>
+   </target>   
+	
+	
+	<!--Change the Value of Xmx for weblogic.-->
+	<!--Create by Elliao-->  
+	<target name="replace_MaxPermSize" depends="setup_windows, setup_linux">
+       	<property name="setDomainEnv.dir" value="${MW_HOME}${DIRSEP}user_projects${DIRSEP}domains${DIRSEP}bidomain${DIRSEP}bin"/>
+		<echo message="MW_HOME=${MW_HOME}"></echo>
+	    <copy file="${setDomainEnv.dir}${DIRSEP}setDomainEnv.${osExtension}" tofile="${setDomainEnv.dir}${DIRSEP}setDomainEnv.${osExtension}.ORIG" overwrite="true"></copy>
+	    <replaceregexp file="${setDomainEnv.dir}${DIRSEP}setDomainEnv.${osExtension}" match="-Xmx([0-9]*)m" replace="-Xmx${xmxSize}m" flags="g">
+	    </replaceregexp>
+	</target>  
+	
+    <target name="restartWLS" description="Restart weblogic" depends="setup_windows, setup_linux">
+       	<sequential>
+			<echo>Restart bi_server1</echo>
+			<property name="cmd.dir" value="${MW_HOME}${DIRSEP}user_projects${DIRSEP}domains${DIRSEP}bidomain${DIRSEP}bin"/>
+       
+			<exec executable="${cmd.dir}${DIRSEP}stopWebLogic.${osExtension}">
+				<arg value="${WLS_USER}"/>
+				<arg value="${WLS_PW}"/>
+			</exec>
+			<echo>sleeping till weblogic goes down...</echo>
+			<sleep seconds="300"/>
+			<echo>starting weblogic server...</echo>
+			<exec executable="${cmd.dir}${DIRSEP}startWebLogic.${osExtension}" spawn="true">
+	  			<env key="WLS_USER" value="${WLS_USER}"/>
+				<env key="WLS_PW" value="${WLS_PW}"/>
+			</exec>
+	  		<waitfor>
+				<http url="http://${host}:${wlst_port}"/>
+			</waitfor>
+	 	 	<sleep seconds="300"/>
+		</sequential>        
+    </target>
+		 
+	<!--Restore the Value of Xmx for weblogic.-->
+    <!--Create by Elliao-->  
+    <target name="restore_MaxPermSize" depends="setup_windows, setup_linux">
+      	<sequential>
+         	<echo>Restore the value of Xmx for bi_server1</echo>
+      		<property name="setDomainEnv.dir" value="${MW_HOME}${DIRSEP}user_projects${DIRSEP}domains${DIRSEP}bidomain${DIRSEP}bin"/>
+	  		<copy file="${setDomainEnv.dir}${DIRSEP}setDomainEnv.${osExtension}.ORIG" tofile="${setDomainEnv.dir}${DIRSEP}setDomainEnv.${osExtension}" overwrite="true"></copy>
+		</sequential>        
+    </target>
+
+	<available property="firefoxWin.exist" file="helper.exe" filepath="c:\Mozilla\uninstall\" type= "file"/>
+		<target name="uninstallFirefoxForWindows" if="firefoxWin.exist">
+		     <exec dir="." executable="cmd" >
+		         <arg value="/c c:\Mozilla\uninstall\helper.exe /s"/>
+		     </exec>	         
+		</target>	     
+		<target name="installFirefoxForWindows" depends="uninstallFirefoxForWindows">
+	         <mkdir dir="c:\Mozilla\"/>
+	         <copy file="installconfig.txt" todir="c:\Mozilla\"/>
+		     <exec dir="." executable="cmd" >
+		         <arg value="/c installer.cmd" />
+		     </exec>
+		</target>
+	
+	  <target name="getIEDriverForWindows">
+	       <mkdir dir="c:\IEDriverSetUp\"/>
+	       <copy file="\\slcnas732\export\biqa_artifacts\biee\windowsUtility\IEDriverServer.exe" todir="c:\IEDriverSetUp\"/>
+	       <copy file="\\slcnas732\export\biqa_artifacts\biee\windowsUtility\grantPermission.cmd" todir="c:\IEDriverSetUp\"/>
+	       <exec dir="." executable="cmd" >
+	           <arg value="/c grantPermission.cmd" />
+	       </exec>
+	  </target>
+
+</project>
+  
+  
+

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<TestSuite>
+	<TestCase id="testAddAttackerGroupNTeam">
+		<Param name="method">testAddAttackerGroupNTeam</Param>
+		<Param name="teamName">AttackerTeam_1</Param>
+		<Param name="abbrName">Team_1</Param>
+		<Param name="unit">testCompany</Param>
+		<Param name="adress">BeiJing</Param>
+		<Param name="longitude">116.495986</Param>
+		<Param name="latitude">40.04926</Param>	
+		<Param name="group">AttackerGroup_1</Param>	
+		<Param name="type">PV</Param>
+	</TestCase>
+</TestSuite>

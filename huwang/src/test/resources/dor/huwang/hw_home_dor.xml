@@ -1,0 +1,12 @@
+<DOR>   
+    
+    <!--Home Page-->
+    <elemHWLayoutHeaderInfo			xpath="//div[contains(@class,'LayoutHeaderInfo-infoBtn')]"/>
+
+	<elemHWMenuNodeOpened 			xpath="//ul[@role='menubar']//li[contains(@class,'is-opened')]/*[contains(text(),'%1')]"/>
+	<elemHWMenuNodeNotOpened 		xpath="//ul[@role='menubar']//li[not(contains(@class,'is-opened'))]/*[contains(text(),'%1')]"/>
+	<elemHWSubMenuSelected 			xpath="//li[contains(@class,'is-active') and text()='%1']"/>
+	<elemHWSubMenuNotSelected 		xpath="//li[not(contains(@class,'is-active')) and text()='%1']"/>
+
+</DOR>
+                              

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<TestSuite>
+	<TestCase id="testLogin">
+		<Param name="method">testLogin</Param>
+	</TestCase>
+</TestSuite>

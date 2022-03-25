@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<TestSuite>
+
+	<TestCase id="testDepartments">
+		<Param name="method">testDepartments</Param>
+		<Param name="checkValues">data:name/电力</Param>
+	</TestCase>
+
+</TestSuite>
+

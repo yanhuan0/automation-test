@@ -1,0 +1,40 @@
+<DOR>   
+    
+    <!--Tab Page-->
+    <elemHWDefenderTabTeamChecked          xpath="//div[@id='tab-defense-team' and contains(@class,'is-active')]"/>
+    <elemHWDefenderTabTeamNotChecked       xpath="//div[@id='tab-defense-team' and not(contains(@class,'is-active'))]"/>
+    <elemHWDefenderTabGroupChecked         xpath="//div[@id='tab-defense-group' and contains(@class,'is-active')]"/>
+    <elemHWDefenderTabGroupNotChecked      xpath="//div[@id='tab-defense-group' and not(contains(@class,'is-active'))]"/>
+    <elemHWDefenderTabResourceChecked      xpath="//div[@id='tab-defense-resource' and contains(@class,'is-active')]"/>
+    <elemHWDefenderTabResourceNotChecked   xpath="//div[@id='tab-defense-resource' and not(contains(@class,'is-active'))]"/>
+    
+    <!-- Team Tab -->
+    <btnHWDefenderAddTeam	 			xpath="//div[@id='pane-defense-team']//span[text()='添加']/parent::button"/>
+    
+    <!-- Add/Edit Team page -->
+    <elemHWDefenderTeamNameTitle  		xpath="//label[@for='title']"/>editHWDefenderTeamGroup
+    <editHWDefenderTeamName 	  		xpath="//label[@for='title']/..//input"/>
+    <editHWDefenderTeamAbbreviation		xpath="//label[@for='title_abbreviation']/..//input"/>
+	<editHWDefenderTeamLocation			xpath="//label[@for='location_id']/..//input"/>
+	<editHWDefenderTeamAddress 	  		xpath="//label[@for='address']/..//input"/>
+	<editHWDefenderTeamLongitude 		xpath="//label[@for='longitude']/..//input"/>
+	<editHWDefenderTeamLatitude 		xpath="//label[@for='latitude']/..//input"/>
+	<elemHWDefenderTeamDepartment		xpath="//label[@for='department_id']/..//input"/>	
+	<editHWDefenderTeamLogo 	 		xpath="//label[@for='logo']/..//span"/>
+	<editHWDefenderTeamGroup			xpath="//label[@for='team_group']/..//input"/>	
+	<elemHWDefenderTeamProps			xpath="//label[@for='property_id']/..//input"/>	
+	<elemHWDefenderTeamPropsItem		xpath="//div[not(contains(@style,'display: none')) and contains(@class,'el-popper')]//span[text()='%1']"/>
+	
+	<!-- Group Tab -->
+	<btnHWDefenderAddGroup	 		xpath="//div[@id='pane-defense-group']//span[text()='添加']/parent::button"/>
+	
+    <!-- Add/Edit group page -->
+    <elemHWDefenderGroupName 		xpath="//label[@for='name']/..//input"/>
+    <elemHWDefenderGroupDes			xpath="//textarea"/>
+    
+    <!-- The common element for Team tab and Group Tab -->
+    <btnHWDefenderAddOK			xpath="//div[@aria-label='%1']//span[text()='%2']/parent::button"/>
+    
+
+</DOR>
+                              

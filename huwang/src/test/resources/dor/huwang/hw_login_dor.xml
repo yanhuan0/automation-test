@@ -1,0 +1,10 @@
+<DOR>   
+    
+    <!--Login Page-->
+    <elemHWLoginInput          xpath="//div[contains(@class,'el-input--big')]//input[@type='text'][%1]"/>
+    <elemHWLoginPasswd        xpath="//input[@type='password']"/>
+    <elemHWLoginCode          xpath="//div[contains(@class,'el-input--big-code')]//input"/>    
+    <elemHWLoginCheckPolocy   xpath="//label[not(contains(@class,'is-checked'))]//span[@class='el-checkbox__inner']"/>
+	<elemHWLoginOKButton   xpath="//button[not(contains(@style,'display: none;'))]"/>
+</DOR>
+                              

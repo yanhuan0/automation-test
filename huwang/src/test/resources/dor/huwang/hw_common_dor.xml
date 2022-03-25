@@ -1,0 +1,8 @@
+<DOR>   
+    
+	<!-- Alert on page -->
+	<elemHWAlertMessage				xapth="//div[@role='alert']"/>	
+	
+	<elemHWDivText				xpath="//div[text()='%1']"/>
+</DOR>
+                              

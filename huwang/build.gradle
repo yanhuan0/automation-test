@@ -1,0 +1,103 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+import org.apache.tools.ant.taskdefs.condition.Os
+repositories {
+
+    maven {
+        url "https://repo1.maven.org/maven2"
+    }
+}
+
+dependencies {
+    testImplementation 'org.seleniumhq.selenium:selenium-java:3.14.0'
+	testImplementation 'org.testng:testng:6.9.10'
+	testImplementation 'org.glassfish.jersey.media:jersey-media-multipart:2.12'
+    testImplementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    testImplementation 'com.google.guava:guava:23.0'
+	testImplementation 'net.schmizz:sshj:0.9.0'
+	testImplementation 'log4j:log4j:1.2.17'
+	testImplementation 'junit:junit:4.12'
+	testImplementation 'pdfbox:pdfbox:0.7.3'
+	testImplementation 'org.apache.pdfbox:pdfbox:1.8.12'
+	testImplementation 'org.apache.poi:poi:3.15'
+	testImplementation 'org.apache.poi:poi-ooxml:3.15'
+	testImplementation 'org.jdom:jdom:2.0.0'
+	//testImplementation files(System.getProperty('FRAMEWORK_DIR') + '/fmw-bi-qafmk-12.1.4.0.0-SNAPSHOT.jar')
+  
+ 
+	testImplementation 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+	testImplementation 'org.apache.commons:commons-lang3:3.4'
+	testImplementation 'org.apache.ant:ant-junit:1.9.2'
+	testImplementation 'org.apache.ant:ant:1.9.2'
+	testImplementation 'org.json:json:20200518'
+	
+	// Here be rest API test dependencies
+	testImplementation 'org.glassfish.jersey.core:jersey-server:2.24.1'
+	testImplementation 'org.glassfish.jersey.bundles.repackaged:jersey-guava:2.24.1'
+	testImplementation 'org.glassfish.jersey.core:jersey-common:2.24.1'
+	testImplementation 'org.glassfish.jersey.core:jersey-client:2.24.1'
+	testImplementation 'com.google.code.gson:gson:2.8.2'
+	testImplementation 'commons-io:commons-io:2.4'
+	testImplementation 'io.rest-assured:rest-assured:4.3.1'
+}	
+
+def testsPackage = { 'package'(name: 'com.qatest.functional.*') }
+
+task testHWMats(type: Test) {
+  useTestNG {
+	ignoreFailures = true
+    options.listeners << 'com.qa.framework.TestNGGrouping'
+    System.getProperties().each { prop, val ->
+      if(prop.startsWith('qa.')){
+        systemProperty prop, val
+      }
+    }
+	
+	systemProperty 'qa.t.work', rootProject.file("huwang/build").absolutePath
+    systemProperty 'root.dir', rootProject.file("huwang/src/test/java").absolutePath
+    suiteXmlBuilder().suite(name: 'testHWFunctionMats') {
+      test(name: 'test-functional-hw') {
+        groups {
+          run {
+            include(name: 'hw_mats1')
+          }
+        }
+	  packages {
+	    'package' (name: 'com.qatest.functional.huwang.tests.*')
+		}
+      }
+    }
+  }
+}
+
+task testHWAPI(type: Test) {
+  useTestNG {
+   	ignoreFailures = true
+    options.listeners << 'com.qa.framework.TestNGGrouping'
+	
+    System.getProperties().each { prop, val ->
+      if(prop.startsWith('qa.')){
+        systemProperty prop, val
+      }
+    }
+
+	systemProperty 'qa.t.work', rootProject.file("huwang/build").absolutePath
+    systemProperty 'root.dir', rootProject.file("huwang/src/test/java").absolutePath
+    suiteXmlBuilder().suite(name: 'testHWFunctionAPI') {
+      test(name: 'test-functional-hwapi') {
+        groups {
+          run {
+            include(name: 'hw_api')
+          }
+        }
+	  packages {
+	    'package' (name: 'com.qatest.functional.huwang.restapitests.*')
+		}
+      }
+    }
+  }
+}
+
+test.dependsOn(testHWMats)
+

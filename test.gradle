@@ -1,0 +1,38 @@
+apply plugin: 'java'
+
+def boolean canRunInParallel() {
+    boolean poolAvailable = System.properties['bi.testware.resourcepooler.BITestHosts'] != null || System.properties['testconfig.iaas.type'] == 'openstack'
+    return poolAvailable
+}
+
+def boolean runAll() {
+    def runall = System.properties['testconfig.runall']
+    println "runall = " + runall
+    return runall && runall.equals("true") == true
+}
+
+allprojects.each { prj ->
+  prj.tasks.withType(Test) {
+    systemProperties System.getProperties()
+    systemProperty 'qa.t.work', project(':huwang').buildDir.absolutePath
+    // systemProperty 'root.dir',rootProject.file("huwang/src/java").absolutePath
+   // systemProperties 'projectDir': projectDir
+    systemProperties 'qa.twork': project(':huwang').buildDir.absolutePath
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message)
+    }
+
+    outputs.upToDateWhen { false }
+  }
+}
+

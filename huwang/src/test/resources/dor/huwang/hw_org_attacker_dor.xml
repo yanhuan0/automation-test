@@ -1,0 +1,39 @@
+<DOR>   
+    
+    <!--Tab Page-->
+    <elemHWAttackerTabTeamChecked          xpath="//div[@id='tab-team' and contains(@class,'is-active')]"/>
+    <elemHWAttackerTabTeamNotChecked       xpath="//div[@id='tab-team' and not(contains(@class,'is-active'))]"/>
+    <elemHWAttackerTabGroupChecked         xpath="//div[@id='tab-group' and contains(@class,'is-active')]"/>
+    <elemHWAttackerTabGroupNotChecked      xpath="//div[@id='tab-group' and not(contains(@class,'is-active'))]"/>
+    <elemHWAttackerTabResourceChecked      xpath="//div[@id='tab-resource' and contains(@class,'is-active')]"/>
+    <elemHWAttackerTabResourceNotChecked   xpath="//div[@id='tab-resource' and not(contains(@class,'is-active'))]"/>
+    
+    <!-- Team Tab -->
+    <btnHWAttackerAddTeam	 				xpath="//div[@aria-labelledby='tab-team']//span[text()='添加']/parent::button"/>
+    
+    <!-- Add/Edit Team page -->
+    <elemHWAttackerTeamNameTitle  			xpath="//label[@for='title']"/>
+    <editHWAttackerTeamName 	  			xpath="//label[@for='title']/..//input"/>
+    <editHWAttackerTeamAbbreviationName 	xpath="//label[@for='title_abbreviation']/..//input"/>
+    <editHWAttackerTeamUnit 				xpath="//label[@for='unit']/..//input"/>
+	<editHWAttackerTeamAddress 	  			xpath="//label[@for='address']/..//input"/>
+	<editHWAttackerTeamLongitude 			xpath="//label[@for='longitude']/..//input"/>
+	<editHWAttackerTeamLatitude 			xpath="//label[@for='latitude']/..//input"/>
+	<editHWAttackerTeamLogo 	 			xpath="//label[@for='logo']/..//span"/>
+	<editHWAttackerTeamGroup				xpath="//label[@for='team_group']/..//input"/>
+	<elemHWAttackerTeamProps				xpath="//label[@for='property_id']/..//input"/>
+	<elemHWAttackerTeamPropsItem			xpath="//li[@class='el-select-dropdown__item']/span[text()='%1']"/>
+	
+	<!-- Group Tab -->
+	<btnHWAttackerAddGroup	 		xpath="//div[@aria-labelledby='tab-group']//span[text()='添加']/parent::button"/>
+	
+    <!-- Add/Edit group page -->
+    <elemHWAttackerGroupName 		xpath="//label[@for='name']/..//input"/>
+    <elemHWAttackerGroupDes			xpath="//textarea"/>
+    
+    <!-- The common element for Team tab and Group Tab -->
+    <btnHWAttackerAddOK			xpath="//div[@aria-label='%1']//span[text()='%2']/parent::button"/>
+    
+
+</DOR>
+                              
